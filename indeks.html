@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Legenda Indonesia Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS tambahan untuk efek 'hotspot' */
+        .hotspot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: rgba(0, 123, 255, 0.7);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hotspot:hover {
+            transform: scale(1.2);
+            background-color: rgba(255, 0, 0, 0.9);
+        }
+        /* Animasi berdenyut untuk menarik perhatian */
+        .hotspot::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(0, 123, 255, 0.5);
+            animation: pulse 1.5s infinite;
+            z-index: -1;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-4xl mx-auto">
+        <h1 class="text-2xl md:text-4xl font-bold text-center text-gray-800 mb-4">Peta Legenda Nusantara</h1>
+        <p class="text-center text-gray-600 mb-6">Klik pada titik di peta untuk membaca cerita legenda dari wilayah tersebut.</p>
+          
+        <div class="relative w-full rounded-lg shadow-xl overflow-hidden">
+             
+            <img src="peta-indonesia.jpg"
+                  alt="Peta Indonesia"
+                  class="w-full h-auto object-cover">
+
+            <div class="hotspot"
+                 data-region="jawa-kuwung"
+                 style="top: 70%; left: 33%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="kalimantan-menangis"
+                 style="top: 40%; left: 38%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="kalimantan-tinagat"
+                 style="top: 30%; left: 55%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="papua-cendrawasih"
+                 style="top: 55%; left: 88%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="sumatera-toba"
+                 style="top: 25%; left: 15%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="sulawesi-lumimuut"
+                 style="top: 30%; left: 70%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="sumatera-pahitlidah"
+                 style="top: 55%; left: 24%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="jawa-perahu"
+                 style="top: 68%; left: 30%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="aceh-tapaktuan"
+                 style="top: 15%; left: 8%;">
+            </div>
+            
+            <div class="hotspot"
+                 data-region="maluku-telagabiru"
+                 style="top: 50%; left: 75%;">
+            </div>
+          
+            </div>
+    </div>
+
+    <div id="info-modal"
+         class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+          
+        <div class="bg-white w-full max-w-lg rounded-lg shadow-2xl overflow-hidden relative animate-fade-in">
+            <button id="close-modal"
+                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-3xl z-10 bg-white bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center p-0 leading-none"
+                    aria-label="Tutup">&times;</button>
+             
+            <img id="info-image" src="" alt="Ilustrasi Legenda" class="w-full h-64 object-cover">
+            
+            <div class="p-6">
+                <h2 id="info-title" class="text-xl md:text-3xl font-bold text-gray-900 mb-4"></h2>
+                <p id="info-content" class="text-gray-700 text-sm md:text-base leading-relaxed"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATABASE CERITA LEGENDA ---
+        // PERBAIKAN: Sintaks objek JavaScript dikoreksi.
+        // Kunci diubah menjadi unik agar setiap hotspot bekerja dengan benar.
+
+        const legendData = {
+            "jawa-batu kuwung": {
+                title: "Batu Kuwung",
+                story: "Dahulu kala, hiduplah seorang saudagar kaya yang sombong dan kikir. Hingga pada akhirnya mendapat hukuman berupa kelumpuhan. Untuk sembuh, ia diperintahkan bertapa di sebuah batu cekung (Batu Kuwung) dan berjanji akan berubah sifat menjadi dermawan. Setelah sembuh, ia menepati janjinya, membagikan hartanya, dan sumber air panas yang muncul dari batu tersebut.",
+                imageSrc: "batukuwung.jpg"
+            },
+            "kalimantan- batu menangis": {
+                title: "Batu Menangis",
+                story: "Di sebuah desa terpencil, hiduplah seorang ibu beserta anak perempuannya. Anak perempuan tersebut bernama Darmi dan durhaka terhadap Ibunya bahkan menolak untuk mengakui ibunya dan hanya mementingkan penampilan. Akibatnya, ia dikutuk menjadi batu sambil menangis menyesali perbuatannya, memberikan pesan moral untuk selalu menghormati orang tua.",
+                imageSrc: "batumenangis.jpg"
+            },
+            "kalimantan-batu tinagat": { // Kunci diubah agar unik (sebelumnya sama dengan "kalimantan-menangis")
+                title: "Batu Tinagat",
+                story: "Seorang pemuda bertemu dengan tujuh putri kayangan di pantai dan berhasil mengambil selendang salah satu putri, lalu menikahinya. Mereka hidup bahagia dan dikaruniai seorang anak. Namun, saat pesta desa, sang putri kembali ke kayangan setelah menari dan suaminya ditinggalkan.",
+                imageSrc: "batutinagat.jpg"
+            },
+            "papua-cendrawasih": { 
+                title: "Cendrawasih",
+                story: "Dahulu di pegunungan Bumberi, Fakfak, hiduplah seorang ibu bernama Baria bersama anaknya Kweiya dan dua adik tirinya, Niko serta Kiara. Suatu hari, saat ibunya pergi ke ladang, Kweiya bekerja dengan rajin menganyam noken, tetapi kedua adik tirinya iri dan berniat menyakitinya. Dalam pelariannya, Kweiya memintal benang dari kulit kayu dan meloncat ke dahan pohon, lalu berubah menjadi burung indah bernama Cendrawasih. Ibunya yang mencari Kweiya juga berubah menjadi burung, sementara kedua adik tirinya berubah menjadi burung dengan bulu yang tidak seindah Kweiya sebagai akibat dari kejahatan.",
+                imageSrc: "cendrawasih.jpg"
+            },
+            "sumatera-toba": { // Kunci diubah agar unik
+                title: "Danau Toba",
+                story: "Dahulu, hiduplah seorang pemuda bernama Toba yang memancing di sungai. Suatu hari, ia menangkap ikan besar yang kemudian berubah menjadi perempuan cantik. Toba menikahinya dengan syarat sang istri tidak boleh membuka rahasianya, namun suatu hari rahasia itu terbongkar. Akibatnya, istri dan anaknya berubah menjadi ikan, dan air yang meluap dari sungai membentuk Danau Toba, sedangkan pulau di tengahnya menjadi Pulau Samosir, tempat anak Toba tinggal.",
+                imageSrc: "danautoba.jpg"
+            },
+            "sulawesi-lumimuut": { // Kunci diubah agar unik
+                title: "Putri Lumimuut",
+                story: "Lumimuut, seorang putri dari Kekaisaran Jepang yang dibuang ke laut dan terdampar di Pantai Manado, kemudian diangkat oleh seorang wanita sakti bernama Karema. Ia kemudian menikah dengan Toar, seorang pemuda kiriman dewa, dan memiliki sembilan anak laki-laki serta sembilan anak perempuan, yang menjadi leluhur masyarakat Minahasa.",
+                imageSrc: "putrilumimuut.jpg"
+            },
+            "sumatera-pahitlidah": { // Kunci diubah agar unik (sebelumnya sama dengan "sumatera-toba")
+                title: "Si Pahit Lidah",
+                story: "Dahulu, di wilayah Pasemah, hiduplah seorang tokoh sakti bernama Si Pahit Lidah. Ia memiliki kekuatan luar biasa: apa pun yang diucapkannya, termasuk kutukan atau sumpah, bisa berubah menjadi kenyataan, bahkan mengubah manusia, hewan, atau benda menjadi batu. Suatu hari, ia bertarung dengan tokoh sakti lain bernama Si Mata Empat, dan meskipun keduanya akhirnya meninggal, kutukan Si Pahit Lidah tetap tersisa.",
+                imageSrc: "sipahitlidah.jpg"
+            },
+            "jawa-perahu": { // Kunci diubah agar unik
+                title: "Tangkuban Perahu",
+                story: "Dahulu, hiduplah seorang pemuda bernama Sangkuriang yang jatuh cinta kepada seorang perempuan bernama Dayang Sumbi, tanpa mengetahui bahwa wanita itu adalah ibunya sendiri. Dayang Sumbi menolak pernikahan itu, lalu Sangkuriang marah dan menendang perahu yang sedang dibuatnya. Perahu itu terbalik dan berubah menjadi gunung, yang kini dikenal sebagai Gunung Tangkuban Perahu.",
+                imageSrc: "tangkubanperahu.jpg"
+            },
+            "aceh-tapaktuan": { // Kunci diubah agar unik
+                title: "Tapak Tuan Tapa",
+                story: "Dahulu kala di kawasan gunung yang kini dikenal sebagai Gunung Tuan dekat Tapak Tuan, hiduplah seorang petapa sakti bernama Tuan Tapa yang memiliki kekuatan luar biasa dan tubuh besar luar biasa. Suatu hari, muncul sepasang naga dari Tiongkok yang menemukan seorang bayi perempuan terapung di tengah laut, lalu memeliharanya. Ketika raja dan permaisuri dari Kerajaan Asralanoka menuntut anak mereka kembali, terjadi pertarungan hebat antara sang naga dengan Tuan Tapa yang turun tangan. Dalam pertarungan tersebut, Tuan Tapa menjatuhkan satu langkah besar yang meninggalkan jejak kaki raksasa di batu karang di tepi laut (ukurannya sekitar 2,5 meter lebar dan 6 meter panjang). Setelah kemenangan Tuan Tapa, nama Tapak Tuan kemudian dipakai untuk menyebut daerah tersebut (tapak berarti jejak kaki, tuan merujuk kepada Tuan Tapa).",
+                imageSrc: "tapaktuantapa.jpg"
+            },
+            "maluku-telagabiru": { // Kunci diubah agar unik
+                title: "Telaga Biru",
+                story: "Dahulu di dusun kecil Lisawa, hidup seorang gadis bernama Majojaru yang sangat mencintai pemuda bernama Magohiduuru. Suatu ketika Magohiduuru pergi merantau dan tak kembali, sehingga hati Majojaru remuk dan ia pun menangis di bawah pohon beringin selama berhari-hari. Air matanya terus menetes, hingga akhirnya menggenang dan membentuk sebuah telaga kecil dengan air yang sangat bening dan berwarna biru seperti matanya. Majojaru pun tenggelam dalam kesedihan dan menjadi bagian dari telaga itu.",
+                imageSrc: "telagabiru.jpg"
+            }
+        };
+
+        // --- LOGIKA JAVASCRIPT ---
+
+        // 1. Ambil semua elemen yang kita butuhkan
+        const modal = document.getElementById('info-modal');
+        const modalTitle = document.getElementById('info-title');
+        const modalContent = document.getElementById('info-content');
+        const modalImage = document.getElementById('info-image');
+        const closeModalBtn = document.getElementById('close-modal');
+        // 'querySelectorAll' mengambil SEMUA elemen dengan class 'hotspot'
+        const hotspots = document.querySelectorAll('.hotspot');
+
+        // 2. Fungsi untuk menampilkan modal
+        function showModal(region) {
+            const data = legendData[region];
+            if (data) {
+                // Isi konten modal
+                modalTitle.textContent = data.title;
+                modalContent.textContent = data.story;
+                modalImage.src = data.imageSrc;
+                modalImage.alt = "Ilustrasi " + data.title;
+                // Tampilkan modal
+                modal.classList.remove('hidden');
+            } else {
+                console.error("Data tidak ditemukan untuk region:", region);
+                // Optional: Tampilkan pesan default jika data tidak ada
+                modalTitle.textContent = "Data Legenda Tidak Ditemukan";
+                modalContent.textContent = "Silakan periksa data-region dan database legendData Anda.";
+                modalImage.src = "";
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // 3. Fungsi untuk menyembunyikan modal
+        function hideModal() {
+            modal.classList.add('hidden');
+            modalImage.src = ""; // Membersihkan gambar saat ditutup
+        }
+
+        // 4. Tambahkan 'event listener' (pendengar aksi) ke setiap hotspot
+        hotspots.forEach(spot => {
+            spot.addEventListener('click', () => {
+                // Ambil nilai dari atribut 'data-region'
+                const regionName = spot.dataset.region;
+                showModal(regionName);
+            });
+        });
+
+        // 5. Tambahkan 'event listener' untuk tombol close
+        closeModalBtn.addEventListener('click', hideModal);
+
+        // 6. (Opsional) Tutup modal jika mengklik di luar area konten
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                hideModal();
+            }
+        });
+
+    </script>
+</body>
+</html>
